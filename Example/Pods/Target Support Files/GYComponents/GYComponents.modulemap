@@ -1,0 +1,6 @@
+framework module GYComponents {
+  umbrella header "GYComponents-umbrella.h"
+
+  export *
+  module * { export * }
+}

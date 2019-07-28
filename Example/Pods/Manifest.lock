@@ -1,0 +1,16 @@
+PODS:
+  - GYComponents (0.1.0)
+
+DEPENDENCIES:
+  - GYComponents (from `../`)
+
+EXTERNAL SOURCES:
+  GYComponents:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  GYComponents: 030f83b0e485317590205f6b75faae224c1763e8
+
+PODFILE CHECKSUM: ac6f72a8bb7122ebede7bc73b7beb06b29298482
+
+COCOAPODS: 1.6.1

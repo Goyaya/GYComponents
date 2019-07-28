@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'GYComponents'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of GYComponents.'
+  s.summary          = 'A useful collection of tiny components.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+  A useful collection of tiny components. Include Foundation extensions and UIKit extensions.
                        DESC
 
   s.homepage         = 'https://github.com/goyaya/GYComponents'
@@ -29,8 +29,26 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
-
-  s.source_files = 'GYComponents/Classes/**/*'
+  
+  s.requires_arc = true
+  
+  s.subspec 'Dependence' do |d|
+    d.source_files = 'GYComponents/Dependence/**/*'
+    d.frameworks   = "Foundation"
+  end
+  
+  s.subspec 'Foundation' do |f|
+    f.source_files = 'GYComponents/Foundation/**/*'
+    f.frameworks   = "Foundation"
+    f.dependency 'GYComponents/Dependence'
+  end
+  
+  s.subspec 'UI' do |u|
+    u.source_files = 'GYComponents/UI/**/*'
+    u.frameworks   = "UIKit"
+    u.dependency 'GYComponents/Dependence'
+  end
+  
   
   # s.resource_bundles = {
   #   'GYComponents' => ['GYComponents/Assets/*.png']
