@@ -23,6 +23,8 @@
 		E308BCFE22ED75C800C47F72 /* GYComponentsHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = E308BCFD22ED75C800C47F72 /* GYComponentsHeader.h */; };
 		E308BD0122ED7A1100C47F72 /* GYRunLoopObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E308BCFF22ED7A1000C47F72 /* GYRunLoopObserver.h */; };
 		E308BD0222ED7A1100C47F72 /* GYRunLoopObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E308BD0022ED7A1000C47F72 /* GYRunLoopObserver.m */; };
+		E388D63D23069148003A62FD /* GYCollectionViewDivisionLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = E388D63B23069148003A62FD /* GYCollectionViewDivisionLayout.h */; };
+		E388D63E23069148003A62FD /* GYCollectionViewDivisionLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E388D63C23069148003A62FD /* GYCollectionViewDivisionLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +81,8 @@
 		E308BCFD22ED75C800C47F72 /* GYComponentsHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYComponentsHeader.h; sourceTree = "<group>"; };
 		E308BCFF22ED7A1000C47F72 /* GYRunLoopObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYRunLoopObserver.h; sourceTree = "<group>"; };
 		E308BD0022ED7A1000C47F72 /* GYRunLoopObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYRunLoopObserver.m; sourceTree = "<group>"; };
+		E388D63B23069148003A62FD /* GYCollectionViewDivisionLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYCollectionViewDivisionLayout.h; sourceTree = "<group>"; };
+		E388D63C23069148003A62FD /* GYCollectionViewDivisionLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYCollectionViewDivisionLayout.m; sourceTree = "<group>"; };
 		E8FE50AB81CA47BABD80D8DFA3F4B52B /* Pods-GYComponents_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-GYComponents_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		F679E6130AFF609F7DE9D57C68FFBE9B /* Pods-GYComponents_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-GYComponents_Example.modulemap"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -230,6 +234,8 @@
 			children = (
 				E308BCF222ED728700C47F72 /* GYAVPlayerView.h */,
 				E308BCF122ED728700C47F72 /* GYAVPlayerView.m */,
+				E388D63B23069148003A62FD /* GYCollectionViewDivisionLayout.h */,
+				E388D63C23069148003A62FD /* GYCollectionViewDivisionLayout.m */,
 			);
 			name = UI;
 			path = GYComponents/UI;
@@ -293,6 +299,7 @@
 				E308BCFE22ED75C800C47F72 /* GYComponentsHeader.h in Headers */,
 				E308BCF922ED728700C47F72 /* NSTimer+GYKit.h in Headers */,
 				E308BCF722ED728700C47F72 /* GYAVPlayerView.h in Headers */,
+				E388D63D23069148003A62FD /* GYCollectionViewDivisionLayout.h in Headers */,
 				E308BD0122ED7A1100C47F72 /* GYRunLoopObserver.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +439,7 @@
 				E308BCF622ED728700C47F72 /* GYAVPlayerView.m in Sources */,
 				E308BD0222ED7A1100C47F72 /* GYRunLoopObserver.m in Sources */,
 				E308BCF822ED728700C47F72 /* NSTimer+GYKit.m in Sources */,
+				E388D63E23069148003A62FD /* GYCollectionViewDivisionLayout.m in Sources */,
 				10347C3CE136F5F054D8614DC21CCFB8 /* GYComponents-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
