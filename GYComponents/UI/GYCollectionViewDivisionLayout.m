@@ -204,7 +204,7 @@
     return self.cachedCellAttributes[indexPath.section][indexPath.row];
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
     NSString *key = [NSString stringWithFormat:@"%ld-%ld", indexPath.section, indexPath.item];
     return self.cachedSupplementaryAttributes[key];
 }
