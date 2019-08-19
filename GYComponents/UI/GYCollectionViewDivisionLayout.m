@@ -77,7 +77,7 @@
                     UICollectionViewLayoutAttributes *headerAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:indexPath];
                     if (headerAttributes) {
                         headerAttributes.frame = CGRectMake(0, sectionLastY, maxWidth, headerSize.height);
-                        NSString *key = [NSString stringWithFormat:@"%ld-%ld", indexPath.section, indexPath.item];
+                        NSString *key = [self keyFromIndexPath:indexPath];
                         self.cachedSupplementaryAttributes[key] = headerAttributes;
                     }
                     sectionLastY += headerSize.height + insets.top;
@@ -111,7 +111,7 @@
                     UICollectionViewLayoutAttributes *footerAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:indexPath];
                     if (footerAttributes) {
                         footerAttributes.frame = CGRectMake(0, sectionLastY + insets.bottom, maxWidth, footerSize.height);
-                        NSString *key = [NSString stringWithFormat:@"%ld-%ld", indexPath.section, indexPath.item];
+                        NSString *key = [self keyFromIndexPath:indexPath];
                         self.cachedSupplementaryAttributes[key] = footerAttributes;
                     }
                     sectionLastY = CGRectGetMaxY(footerAttributes.frame);
@@ -132,7 +132,7 @@
                     UICollectionViewLayoutAttributes *headerAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:indexPath];
                     if (headerAttributes) {
                         headerAttributes.frame = CGRectMake(sectionLastX, 0, headerSize.width, maxHeight);
-                        NSString *key = [NSString stringWithFormat:@"%ld-%ld", indexPath.section, indexPath.item];
+                        NSString *key = [self keyFromIndexPath:indexPath];
                         self.cachedSupplementaryAttributes[key] = headerAttributes;
                     }
                     sectionLastX += headerSize.width + insets.left;
@@ -166,7 +166,7 @@
                     UICollectionViewLayoutAttributes *footerAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:indexPath];
                     if (footerAttributes) {
                         footerAttributes.frame = CGRectMake(sectionLastX + insets.right, 0, footerSize.width, maxHeight);
-                        NSString *key = [NSString stringWithFormat:@"%ld-%ld", indexPath.section, indexPath.item];
+                        NSString *key = [self keyFromIndexPath:indexPath];
                         self.cachedSupplementaryAttributes[key] = footerAttributes;
                     }
                     sectionLastX = CGRectGetMaxX(footerAttributes.frame);
@@ -205,7 +205,7 @@
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
-    NSString *key = [NSString stringWithFormat:@"%ld-%ld", indexPath.section, indexPath.item];
+    NSString *key = [self keyFromIndexPath:indexPath];
     return self.cachedSupplementaryAttributes[key];
 }
 
@@ -218,6 +218,10 @@
 }
 
 #pragma mark -
+
+- (NSString *)keyFromIndexPath:(NSIndexPath *)indexPath {
+    return [NSString stringWithFormat:@"%ld-%ld", (long)indexPath.section, (long)indexPath.item];
+}
 
 - (void)updateFrameRecorderByMaxY:(NSMutableArray<NSValue *> *)recorder withFrame:(CGRect)frame {
     [recorder removeObjectAtIndex:0];
