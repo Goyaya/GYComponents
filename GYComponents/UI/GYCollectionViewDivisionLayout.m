@@ -53,7 +53,7 @@
     // 每个section的起始X,Y值
     CGFloat sectionLastX = 0;
     CGFloat sectionLastY = 0;
-    NSInteger sections = [[self dataSource] numberOfSectionsInCollectionView:self.collectionView];
+    NSInteger sections = [self numberOfSections];;
     for (NSInteger section = 0; section < sections; ++section) {
         NSInteger cells = [[self dataSource] collectionView:self.collectionView numberOfItemsInSection:section];
         NSMutableArray<UICollectionViewLayoutAttributes *> *attributesAtASection = [NSMutableArray arrayWithCapacity:cells];
@@ -289,6 +289,14 @@
         return [dataSource collectionView:self.collectionView numberOfColumnsInSection:section];
     }
     return self.columns;
+}
+
+- (NSInteger)numberOfSections {
+    id<GYCollectionViewDivisionLayoutDataSource> dataSource = [self dataSource];
+    if ([dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)]) {
+        return [dataSource numberOfSectionsInCollectionView:self.collectionView];
+    }
+    return 1;
 }
 
 - (CGFloat)lineSpacingAtNoCheck:(NSInteger)section {
