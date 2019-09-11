@@ -7,6 +7,8 @@
 //
 
 #import "GYFeaturesTableViewController.h"
+#import "GYCollectionViewDivisionLayoutViewController.h"
+
 #import <GYComponents/GYRunLoopObserver.h>
 
 @interface GYFeaturesTableViewController ()
@@ -41,5 +43,11 @@
 - (IBAction)removeRunLoopObserver:(UIButton *)sender {
     _mainRunLoopObserver = nil;
 }
+
+- (IBAction)showCollectionViewDivisionLayoutFeature:(UIButton *)sender {
+    GYCollectionViewDivisionLayoutViewController *controller = [[GYCollectionViewDivisionLayoutViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 
 @end

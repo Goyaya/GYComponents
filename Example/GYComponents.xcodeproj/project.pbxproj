@@ -23,6 +23,7 @@
 		64464B312710EA11A5B52ACF /* Pods_GYComponents_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07DCE747C455F873681D480 /* Pods_GYComponents_Tests.framework */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		E354F1B523292E14000BE24C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E354F1B423292E13000BE24C /* Launch Screen.storyboard */; };
+		E354F1B823293794000BE24C /* GYCollectionViewDivisionLayoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E354F1B723293794000BE24C /* GYCollectionViewDivisionLayoutViewController.m */; };
 		E3FF45822327F4E100526C4A /* GYFeaturesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E3FF45812327F4E100526C4A /* GYFeaturesTableViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,8 @@
 		BABC64C9C7E2A77FE07B47CF /* Pods-GYComponents_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GYComponents_Example.debug.xcconfig"; path = "Target Support Files/Pods-GYComponents_Example/Pods-GYComponents_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		C3E349B7CDBCFE00B2402DAF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		E354F1B423292E13000BE24C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		E354F1B623293794000BE24C /* GYCollectionViewDivisionLayoutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GYCollectionViewDivisionLayoutViewController.h; sourceTree = "<group>"; };
+		E354F1B723293794000BE24C /* GYCollectionViewDivisionLayoutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GYCollectionViewDivisionLayoutViewController.m; sourceTree = "<group>"; };
 		E3FF45802327F4E100526C4A /* GYFeaturesTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GYFeaturesTableViewController.h; sourceTree = "<group>"; };
 		E3FF45812327F4E100526C4A /* GYFeaturesTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GYFeaturesTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -136,6 +139,8 @@
 				6003F59D195388D20070C39A /* GYAppDelegate.m */,
 				E3FF45802327F4E100526C4A /* GYFeaturesTableViewController.h */,
 				E3FF45812327F4E100526C4A /* GYFeaturesTableViewController.m */,
+				E354F1B623293794000BE24C /* GYCollectionViewDivisionLayoutViewController.h */,
+				E354F1B723293794000BE24C /* GYCollectionViewDivisionLayoutViewController.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				E354F1B423292E13000BE24C /* Launch Screen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
@@ -366,6 +371,7 @@
 			files = (
 				6003F59E195388D20070C39A /* GYAppDelegate.m in Sources */,
 				E3FF45822327F4E100526C4A /* GYFeaturesTableViewController.m in Sources */,
+				E354F1B823293794000BE24C /* GYCollectionViewDivisionLayoutViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
