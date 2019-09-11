@@ -10,6 +10,11 @@
 #endif
 #endif
 
+#import "GYComponentsHeader.h"
+#import "GYRunLoopObserver.h"
+#import "NSTimer+GYKit.h"
+#import "GYAVPlayerView.h"
+#import "GYCollectionViewDivisionLayout.h"
 
 FOUNDATION_EXPORT double GYComponentsVersionNumber;
 FOUNDATION_EXPORT const unsigned char GYComponentsVersionString[];

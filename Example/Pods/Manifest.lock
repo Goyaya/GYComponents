@@ -1,5 +1,13 @@
 PODS:
-  - GYComponents (0.1.0)
+  - GYComponents (0.1.2):
+    - GYComponents/Dependence (= 0.1.2)
+    - GYComponents/Foundation (= 0.1.2)
+    - GYComponents/UI (= 0.1.2)
+  - GYComponents/Dependence (0.1.2)
+  - GYComponents/Foundation (0.1.2):
+    - GYComponents/Dependence
+  - GYComponents/UI (0.1.2):
+    - GYComponents/Dependence
 
 DEPENDENCIES:
   - GYComponents (from `../`)
@@ -9,8 +17,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  GYComponents: 030f83b0e485317590205f6b75faae224c1763e8
+  GYComponents: 649a8f0277d8685205d1e69d0c0d7fbb1e6ae753
 
 PODFILE CHECKSUM: ac6f72a8bb7122ebede7bc73b7beb06b29298482
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.5
