@@ -15,6 +15,7 @@
 #import "NSTimer+GYKit.h"
 #import "GYAVPlayerView.h"
 #import "GYCollectionViewDivisionLayout.h"
+#import "GYPageViewController.h"
 
 FOUNDATION_EXPORT double GYComponentsVersionNumber;
 FOUNDATION_EXPORT const unsigned char GYComponentsVersionString[];

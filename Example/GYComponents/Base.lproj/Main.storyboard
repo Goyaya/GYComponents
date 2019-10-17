@@ -74,6 +74,28 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="BIG-iO-Dfm">
+                                        <rect key="frame" x="0.0" y="88" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BIG-iO-Dfm" id="fy5-cD-uAP">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mLs-Zh-l1j">
+                                                    <rect key="frame" x="25" y="7" width="325" height="30"/>
+                                                    <state key="normal" title="PageVIewController"/>
+                                                    <connections>
+                                                        <action selector="showPageViewControllerFeature:" destination="KTl-rG-cPI" eventType="touchUpInside" id="vxR-kM-WqS"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="mLs-Zh-l1j" secondAttribute="trailing" constant="25" id="aUN-K8-C7v"/>
+                                                <constraint firstItem="mLs-Zh-l1j" firstAttribute="leading" secondItem="fy5-cD-uAP" secondAttribute="leading" constant="25" id="gVA-vU-1mz"/>
+                                                <constraint firstItem="mLs-Zh-l1j" firstAttribute="centerY" secondItem="fy5-cD-uAP" secondAttribute="centerY" id="nKV-au-KFy"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>

@@ -8,12 +8,17 @@
 
 #import "GYFeaturesTableViewController.h"
 #import "GYCollectionViewDivisionLayoutViewController.h"
+#import <GYComponents/GYPageViewController.h>
 
 #import <GYComponents/GYRunLoopObserver.h>
 
-@interface GYFeaturesTableViewController ()
+@interface GYFeaturesTableViewController () <
+GYPageViewControllerDataSource
+>
 /// mainRunLoopObserver
 @property (nonatomic, readwrite, strong) GYRunLoopObserver *mainRunLoopObserver;
+/// controllers
+@property (nonatomic, readwrite, strong) NSArray<UIViewController *> *pageViewControllers;
 @end
 
 @implementation GYFeaturesTableViewController
@@ -49,5 +54,51 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (IBAction)showPageViewControllerFeature:(UIButton *)sender {
+    GYPageViewController *controller = [[GYPageViewController alloc] initWithDataSource:self];
+    controller.sc
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+#pragma mark - GYPageViewControllerDataSource
+
+/// total count
+- (NSInteger)numberOfItemsInPageViewController:(GYPageViewController *)pageViewController {
+    return self.pageViewControllers.count;
+}
+
+/// which should display first
+- (NSInteger)indexOfFirstDisplayInPageViewController:(GYPageViewController *)pageViewController {
+    return 0;
+}
+
+/// controller at specify index
+- (UIViewController *)pageViewController:(GYPageViewController *)controller controllerAtIndex:(NSInteger)index {
+    return self.pageViewControllers[index];
+}
+
+- (NSArray<UIViewController *> *)pageViewControllers {
+    if (!_pageViewControllers) {
+        _pageViewControllers
+        = @[
+            ({
+                UIViewController *controller = [[UIViewController alloc] init];
+                controller.view.backgroundColor = [UIColor greenColor];
+                controller;
+            }),
+            ({
+                UIViewController *controller = [[UIViewController alloc] init];
+                controller.view.backgroundColor = [UIColor yellowColor];
+                controller;
+            }),
+            ({
+                UIViewController *controller = [[UIViewController alloc] init];
+                controller.view.backgroundColor = [UIColor brownColor];
+                controller;
+            })
+            ];
+    }
+    return _pageViewControllers;
+}
 
 @end
