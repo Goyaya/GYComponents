@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GYComponents'
-  s.version          = '0.1.3'
+  s.version          = '0.1.4'
   s.summary          = 'A useful collection of tiny components.'
 
 # This description is used to generate tags and improve search results.
@@ -44,9 +44,14 @@ Pod::Spec.new do |s|
   end
   
   s.subspec 'UI' do |u|
-    u.source_files = 'GYComponents/UI/**/*'
-    u.frameworks   = "UIKit"
-    u.dependency 'GYComponents/Dependence'
+      u.source_files = 'GYComponents/UI/**/*'
+      u.frameworks   = "UIKit"
+      u.dependency 'GYComponents/Dependence'
+  end
+  
+  s.subspec 'Media' do |u|
+      u.source_files = 'GYComponents/Media/**/*'
+      u.frameworks   = "AVFoundation"
   end
   
   

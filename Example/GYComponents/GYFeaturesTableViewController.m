@@ -12,13 +12,18 @@
 
 #import <GYComponents/GYRunLoopObserver.h>
 
+#import <GYComponents/GYAVPlayController.h>
+
 @interface GYFeaturesTableViewController () <
 GYPageViewControllerDataSource
+, GYAVPlayControllerDelegate
 >
 /// mainRunLoopObserver
 @property (nonatomic, readwrite, strong) GYRunLoopObserver *mainRunLoopObserver;
 /// controllers
 @property (nonatomic, readwrite, strong) NSArray<UIViewController *> *pageViewControllers;
+/// playController
+@property (nonatomic, readwrite, strong) GYAVPlayController *playController;
 @end
 
 @implementation GYFeaturesTableViewController
@@ -56,8 +61,22 @@ GYPageViewControllerDataSource
 
 - (IBAction)showPageViewControllerFeature:(UIButton *)sender {
     GYPageViewController *controller = [[GYPageViewController alloc] initWithDataSource:self];
-    controller.sc
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (IBAction)showAVPlayControllerFeature {
+    if (_playController) {
+        if (_playController.isPlaying) {
+            [_playController pause];
+        } else {
+            [_playController play];
+        }
+        return;
+    }
+    _playController = [[GYAVPlayController alloc] init];
+    _playController.delegate = self;
+    _playController.url = [NSURL URLWithString:@"https://music.topgamers.cn/1562241711369.mp3"];
+    [_playController prepare];
 }
 
 #pragma mark - GYPageViewControllerDataSource
@@ -99,6 +118,40 @@ GYPageViewControllerDataSource
             ];
     }
     return _pageViewControllers;
+}
+
+#pragma mark -
+
+/// before play
+- (void)AVPlayController:(GYAVPlayController *)playController willPlayItem:(AVPlayerItem *)item {
+    NSLog(@"%s", __func__);
+}
+
+/**
+ ready play
+ 
+ @return YES, player will play the item; NO, adverse;
+ */
+- (BOOL)AVPlayController:(GYAVPlayController *)playController readyPlayItem:(AVPlayerItem *)item {
+    NSLog(@"%s", __func__);
+    return YES;
+}
+
+/// progress updated
+- (void)AVPlayController:(GYAVPlayController *)playController item:(AVPlayerItem *)item progressUpdatedTo:(double)progress inTotal:(double)total {
+    NSLog(@"%s\n\t progress: %.2f, total:%.2f", __func__, progress, total);
+}
+
+/// play finished
+- (void)AVPlayController:(GYAVPlayController *)playController finishedPlayingItem:(AVPlayerItem *)item {
+    NSLog(@"%s", __func__);
+    [playController seekToTime:0];
+    [playController play];
+}
+
+/// failed
+- (void)AVPlayController:(GYAVPlayController *)playController failedPlayingItem:(AVPlayerItem *)item withError:(NSError *)error {
+    NSLog(@"%s", __func__);
 }
 
 @end

@@ -1,6 +1,6 @@
 {
   "name": "GYComponents",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "summary": "A useful collection of tiny components.",
   "description": "A useful collection of tiny components. Include Foundation extensions and UIKit extensions.",
   "homepage": "https://github.com/goyaya/GYComponents",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/goyaya/GYComponents.git",
-    "tag": "0.1.2"
+    "tag": "0.1.3"
   },
   "platforms": {
     "ios": "8.0"
@@ -44,6 +44,11 @@
 
         ]
       }
+    },
+    {
+      "name": "Media",
+      "source_files": "GYComponents/Media/**/*",
+      "frameworks": "AVFoundation"
     }
   ]
 }

@@ -1,29 +1,26 @@
 //
-//  GYAVPlayerView.m
-//  Qianyin
+//  GYAVPlayController.m
+//  GYComponents
 //
-//  Created by 高洋 on 2019/7/25.
-//  Copyright © 2019 Zhibai. All rights reserved.
+//  Created by gaoyang on 2019/10/18.
 //
 
-#import "GYAVPlayerView.h"
+#import "GYAVPlayController.h"
 #import <AVFoundation/AVFoundation.h>
 
-typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
-    GYAVPlayerViewPrepareStatusNone,
-    GYAVPlayerViewPrepareStatusPreparing,
-    GYAVPlayerViewPrepareStatusPrepared
+typedef NS_ENUM(int, GYAVPlayControllerPrepareStatus) {
+    GYAVPlayControllerPrepareStatusNone,
+    GYAVPlayControllerPrepareStatusPreparing,
+    GYAVPlayControllerPrepareStatusPrepared
 };
 
-@interface GYAVPlayerView ()
+@interface GYAVPlayController ()
 
 /// player
 @property (nonatomic, readwrite, strong) AVPlayer *player;
-/// palyerLayer
-@property (nonatomic, readwrite, strong) AVPlayerLayer *playerLayer;
 
 /// 播放器是否准备好了播放
-@property (nonatomic, readwrite, assign) GYAVPlayerViewPrepareStatus prepareStatus;
+@property (nonatomic, readwrite, assign) GYAVPlayControllerPrepareStatus prepareStatus;
 /// 是否处于播放状态
 @property (nonatomic, readwrite, assign, getter=isPlaying) BOOL playing;
 /// 当前item的状态, 记录该状态，可以避免由 ReadyToPlay->ReadyToPlay 的不正常表现
@@ -34,7 +31,7 @@ typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
 
 @end
 
-@implementation GYAVPlayerView
+@implementation GYAVPlayController
 
 - (void)setUrl:(NSURL *)url {
     if ([_url isEqual:url]) {
@@ -61,10 +58,10 @@ typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
 }
 
 - (void)prepare {
-    if (_prepareStatus == GYAVPlayerViewPrepareStatusPreparing || _prepareStatus == GYAVPlayerViewPrepareStatusPrepared) {
+    if (_prepareStatus == GYAVPlayControllerPrepareStatusPreparing || _prepareStatus == GYAVPlayControllerPrepareStatusPrepared) {
         return;
     }
-    _prepareStatus = GYAVPlayerViewPrepareStatusPreparing;
+    _prepareStatus = GYAVPlayControllerPrepareStatusPreparing;
     
     [self checkItemIfNeedsBuild];
     
@@ -74,26 +71,19 @@ typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
         [_player replaceCurrentItemWithPlayerItem:_item];
     }
     
-    if (_playerLayer == nil) {
-        _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
-        _playerLayer.videoGravity = kCAGravityResizeAspect;
-        [self.layer addSublayer:_playerLayer];
-    } else {
-        _playerLayer.player = _player;
-    }
     [self notifyDelegatePlayerWillPlaying];
     [self addObserverForCurrentItem];
 }
 
 - (void)play {
-    if (self.prepareStatus == GYAVPlayerViewPrepareStatusPrepared && self.isPlaying == NO) {
+    if (self.prepareStatus == GYAVPlayControllerPrepareStatusPrepared && self.isPlaying == NO) {
         [self.player play];
         self.playing = YES;
     }
 }
 
 - (void)pause {
-    if (self.prepareStatus == GYAVPlayerViewPrepareStatusPrepared && self.isPlaying) {
+    if (self.prepareStatus == GYAVPlayControllerPrepareStatusPrepared && self.isPlaying) {
         [self.player pause];
         self.playing = NO;
     }
@@ -102,8 +92,6 @@ typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
 /// 停止播放，释放资源
 - (void)stop {
     [self pause];
-    [_playerLayer removeFromSuperlayer];
-    _playerLayer = nil;
     
     [self removeObserverForCurrentItem];
     
@@ -111,11 +99,11 @@ typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
     [_player replaceCurrentItemWithPlayerItem:nil];
     _statusForCurrentItem = AVPlayerItemStatusUnknown;
     self.playing = NO;
-    self.prepareStatus = GYAVPlayerViewPrepareStatusNone;
+    self.prepareStatus = GYAVPlayControllerPrepareStatusNone;
 }
 
 - (void)seekToTime:(double)time {
-    if (self.prepareStatus == GYAVPlayerViewPrepareStatusPrepared) {
+    if (self.prepareStatus == GYAVPlayControllerPrepareStatusPrepared) {
         [self.player seekToTime:CMTimeMake(time, 1)];
     }
 }
@@ -185,7 +173,7 @@ typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
             }
             case AVPlayerItemStatusReadyToPlay: {
                 if (self.statusForCurrentItem != AVPlayerItemStatusReadyToPlay) {
-                    self.prepareStatus = GYAVPlayerViewPrepareStatusPrepared;
+                    self.prepareStatus = GYAVPlayControllerPrepareStatusPrepared;
                     BOOL needsPlay = YES;
                     [self notifyDelegatePlayerReadyPlayAndGetValue:&needsPlay];
                     if (needsPlay) {
@@ -196,7 +184,7 @@ typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
                 break;
             }
             case AVPlayerItemStatusFailed: {
-                self.prepareStatus = GYAVPlayerViewPrepareStatusPrepared;
+                self.prepareStatus = GYAVPlayControllerPrepareStatusPrepared;
                 [self notifyDelegatePlayFailed];
                 self.playing = NO;
                 break;
@@ -265,14 +253,14 @@ typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
 }
 
 - (void)notifyDelegatePlayerWillPlaying {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayerView:willPlayItem:)]) {
-        [self.delegate AVPlayerView:self willPlayItem:_item];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayController:willPlayItem:)]) {
+        [self.delegate AVPlayController:self willPlayItem:_item];
     }
 }
 
 - (void)notifyDelegatePlayerReadyPlayAndGetValue:(BOOL *)value {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayerView:readyPlayItem:)]) {
-        BOOL v = [self.delegate AVPlayerView:self readyPlayItem:_item];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayController:readyPlayItem:)]) {
+        BOOL v = [self.delegate AVPlayController:self readyPlayItem:_item];
         if (value) {
             *value = v;
         }
@@ -280,53 +268,36 @@ typedef NS_ENUM(int, GYAVPlayerViewPrepareStatus) {
 }
 
 - (void)notifyDelegateProgressUpdate:(float)progress total:(float)total {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayerView:item:progressUpdatedTo:inTotal:)]) {
-        [self.delegate AVPlayerView:self item:_item progressUpdatedTo:progress inTotal:total];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayController:item:progressUpdatedTo:inTotal:)]) {
+        [self.delegate AVPlayController:self item:_item progressUpdatedTo:progress inTotal:total];
     }
 }
 
 - (void)notifyDelegatePlayFailed {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayerView:failedPlayingItem:withError:)]) {
-        [self.delegate AVPlayerView:self failedPlayingItem:_item withError:_item.error];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayController:failedPlayingItem:withError:)]) {
+        [self.delegate AVPlayController:self failedPlayingItem:_item withError:_item.error];
     }
 }
 
 - (void)notifyDelegatePlayEnd {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayerView:finishedPlayingItem:)]) {
-        [self.delegate AVPlayerView:self finishedPlayingItem:_item];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(AVPlayController:finishedPlayingItem:)]) {
+        [self.delegate AVPlayController:self finishedPlayingItem:_item];
     }
 }
 
 #pragma mark - override
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+- (instancetype)init {
+    self = [super init];
     if (self) {
         [self attachConfigurations];
     }
-    
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        [self attachConfigurations];
-    }
-    
     return self;
 }
 
 - (void)dealloc {
     [self detachConfigurations];
     [self stop];
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    if (_playerLayer) {
-        _playerLayer.frame = self.bounds;
-    }
 }
 
 @end

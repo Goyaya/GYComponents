@@ -13,7 +13,7 @@
 #import "GYComponentsHeader.h"
 #import "GYRunLoopObserver.h"
 #import "NSTimer+GYKit.h"
-#import "GYAVPlayerView.h"
+#import "GYAVPlayController.h"
 #import "GYCollectionViewDivisionLayout.h"
 #import "GYPageViewController.h"
 
