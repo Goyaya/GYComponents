@@ -79,7 +79,7 @@ typedef NS_ENUM(int, GYPageViewControllerScrollDirection) {
 
 @interface GYPageViewController : UIViewController
 
-@property (nonatomic, readonly, strong, nullable) id<GYPageViewControllerDataSource> dataSource;
+@property (nonatomic, readonly, weak, nullable) id<GYPageViewControllerDataSource> dataSource;
 
 @property (nonatomic, readwrite, weak) id<GYPageViewControllerDelegate> delegate;
 
