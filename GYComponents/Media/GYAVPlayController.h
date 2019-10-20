@@ -49,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite, strong) AVPlayerItem *item;
 /// playing or not
 @property (nonatomic, readonly, assign, getter=isPlaying) BOOL playing;
+/// progress report interval (unit 10s). default is 10
+@property (nonatomic, readwrite, assign) int progressReportInterval;
 
 /// make the view is ready.
 /// when the resource is ready, it play by default.

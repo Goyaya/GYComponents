@@ -113,6 +113,7 @@ typedef NS_ENUM(int, GYAVPlayControllerPrepareStatus) {
 /// 默认设置
 - (void)attachConfigurations {
     [self addSystemNotifications];
+    self.progressReportInterval = 1.0;
 }
 
 /// 清除工作
@@ -140,7 +141,7 @@ typedef NS_ENUM(int, GYAVPlayControllerPrepareStatus) {
     
     [_item addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     typeof(self) __weak weakself = self;
-    _periodicTimeObserver = [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:NULL usingBlock:^(CMTime time) {
+    _periodicTimeObserver = [_player addPeriodicTimeObserverForInterval:CMTimeMake(self.progressReportInterval, 10) queue:NULL usingBlock:^(CMTime time) {
         // 进度更新
         double total = CMTimeGetSeconds(weakself.item.duration);
         double progress = CMTimeGetSeconds(time);
