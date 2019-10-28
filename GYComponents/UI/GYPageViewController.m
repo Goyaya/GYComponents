@@ -28,8 +28,12 @@ typedef struct {
 @interface GYPageViewControllerTransitionContext : NSObject
 /// 起始索引
 @property (nonatomic, readwrite, assign) NSInteger fromIndex;
+/// fromeController
+@property (nonatomic, readwrite, strong) UIViewController *fromController;
 /// 确切的目标索引
 @property (nonatomic, readwrite, assign) NSInteger toIndex;
+/// toController
+@property (nonatomic, readwrite, strong) UIViewController *toController;
 /// 可能的目标索引
 @property (nonatomic, readwrite, assign) NSInteger predictIndex;
 /// 正向距离 - 向左
@@ -68,6 +72,9 @@ UIScrollViewDelegate
 @property (nonatomic, strong) _GYPageViewControllerAppearanceStorage *appearanceStorage;
 /// setIndexComplete
 @property (nonatomic, readwrite, copy) void (^setIndexComplete)(void);
+
+/// 第一个加载的controller
+@property (nonatomic, readwrite, strong) UIViewController *firstLoadViewController;
 
 @end
 
@@ -111,12 +118,45 @@ UIScrollViewDelegate
     
     self.index = NSNotFound;
     [self updateScrollViewContentSize];
-    [self setIndex:[self indexOfFirstDisplayInPageViewController] animation:NO complete:nil];
+    [self loadFirstViewController];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.firstLoadViewController) {
+        [self.firstLoadViewController beginAppearanceTransition:YES animated:animated];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (self.firstLoadViewController) {
+        [self.firstLoadViewController endAppearanceTransition];
+        self.firstLoadViewController = nil;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj beginAppearanceTransition:NO animated:animated];
+    }];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj endAppearanceTransition];
+    }];
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [self updateScrollViewContentSize];
+}
+
+- (BOOL)shouldAutomaticallyForwardAppearanceMethods {
+    return NO;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)targetSize withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -165,16 +205,27 @@ UIScrollViewDelegate
 }
 
 - (void)dealloc {
+#if DEBUG
     NSLog(@"%s", __func__);
+#endif
 }
 
 #pragma mark - public
 
 - (void)setIndex:(NSInteger)index animation:(BOOL)animation complete:(void (^_Nullable)(void))complete {
     NSInteger itemCount = [self numberOfItemsInPageViewController];
-    NSParameterAssert(index < itemCount && index > -1);
+    if (self.index == index || index < 0 || index >= itemCount) {
+        return;
+    }
+    
+    [self beginTransition];
     
     [self loadViewControllerAtIndex:index];
+    
+    self.transitionContext.toIndex = index;
+    [[self controllerAtIndexNoCheck:self.transitionContext.fromIndex] beginAppearanceTransition:NO animated:animation];
+    [[self controllerAtIndexNoCheck:self.transitionContext.toIndex] beginAppearanceTransition:YES animated:animation];
+    
     _index = index;
     // offset
     [self handleScrollDirectionWhenHorizontal:^{
@@ -182,13 +233,20 @@ UIScrollViewDelegate
     } whenVertical:^{
         [self.innerScrollView setContentOffset:CGPointMake(0, self.innerScrollView.bounds.size.height * index) animated:animation];
     }];
-    if (complete == nil) {
-        return;
-    }
-    if (animation) {
-        _setIndexComplete = [complete copy];
-    } else {
-        complete();
+    
+    __weak typeof(self) weakself = self;
+    self.setIndexComplete = ^{
+        __strong typeof(weakself) self = weakself;
+        [[self controllerAtIndexNoCheck:self.transitionContext.fromIndex] endAppearanceTransition];
+        [[self controllerAtIndexNoCheck:self.transitionContext.toIndex] endAppearanceTransition];
+        [self endTransition];
+        if (complete) {
+            complete();
+        }
+    };
+    if (animation == NO) {
+        self.setIndexComplete();
+        self.setIndexComplete = nil;
     }
 }
 
@@ -228,11 +286,11 @@ UIScrollViewDelegate
     }];
 }
 
-- (void)loadViewControllerAtIndex:(NSInteger)index {
+- (UIViewController *)loadViewControllerAtIndex:(NSInteger)index {
     UIViewController *controller = [self controllerAtIndexNoCheck:index];
     // 已经加入直接返回
     if (controller.parentViewController == self) {
-        return;
+        return controller;
     }
     
     if (controller.parentViewController != nil) {
@@ -253,6 +311,13 @@ UIScrollViewDelegate
     }];
     [self.innerScrollView addSubview:controller.view];
     [controller didMoveToParentViewController:self];
+    return controller;
+}
+
+- (void)loadFirstViewController {
+    NSInteger index = [self indexOfFirstDisplayInPageViewController];
+    self.index = index;
+    self.firstLoadViewController = [self loadViewControllerAtIndex: index];
 }
 
 - (void)beginTransition {
@@ -417,8 +482,13 @@ UIScrollViewDelegate
         self.transitionContext.toIndex = (NSInteger)(contentOffset.y / scrollView.bounds.size.height);
     }];
     if (self.transitionContext.fromIndex != self.transitionContext.toIndex) {
+        UIViewController *currentController = [self controllerAtIndexNoCheck:self.transitionContext.fromIndex];
+        [currentController beginAppearanceTransition:NO animated:YES];
         [self notifyDelegateWillChangeIndexTo:self.transitionContext.toIndex];
-        [self loadViewControllerAtIndex:self.transitionContext.toIndex];
+        UIViewController *toController = [self loadViewControllerAtIndex:self.transitionContext.toIndex];
+        [toController beginAppearanceTransition:YES animated:YES];
+        self.transitionContext.fromController = currentController;
+        self.transitionContext.toController = toController;
     }
 }
 
@@ -426,6 +496,8 @@ UIScrollViewDelegate
     self.index = self.transitionContext.toIndex;
     if (_transitionContext.fromIndex != self.transitionContext.toIndex) {
         [self notifyDelegateDidChangeIndexTo:self.transitionContext.toIndex];
+        [self.transitionContext.fromController endAppearanceTransition];
+        [self.transitionContext.toController endAppearanceTransition];
     }
     [self endTransition];
 }
@@ -497,6 +569,7 @@ UIScrollViewDelegate
 - (_GYPageViewControllerAppearanceStorage *)appearanceStorage {
     if (!_appearanceStorage) {
         _appearanceStorage = [[_GYPageViewControllerAppearanceStorage alloc] init];
+        _appearanceStorage.scrollEnabled = YES;
     }
     return _appearanceStorage;
 }

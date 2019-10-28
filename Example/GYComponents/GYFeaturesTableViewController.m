@@ -8,7 +8,9 @@
 
 #import "GYFeaturesTableViewController.h"
 #import "GYCollectionViewDivisionLayoutViewController.h"
-#import <GYComponents/GYPageViewController.h>
+#import "GYLifeCycleViewController.h"
+
+@import GYComponents;
 
 #import <GYComponents/GYRunLoopObserver.h>
 
@@ -62,6 +64,9 @@ GYPageViewControllerDataSource
 - (IBAction)showPageViewControllerFeature:(UIButton *)sender {
     GYPageViewController *controller = [[GYPageViewController alloc] initWithDataSource:self];
     [self.navigationController pushViewController:controller animated:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [controller setIndex:1 animation:YES complete:nil];
+    });
 }
 
 - (IBAction)showAVPlayControllerFeature {
@@ -101,18 +106,18 @@ GYPageViewControllerDataSource
         _pageViewControllers
         = @[
             ({
-                UIViewController *controller = [[UIViewController alloc] init];
-                controller.view.backgroundColor = [UIColor greenColor];
+                UIViewController *controller = [[GYLifeCycleViewController alloc] init];
+                controller.title = @"1";
                 controller;
             }),
             ({
-                UIViewController *controller = [[UIViewController alloc] init];
-                controller.view.backgroundColor = [UIColor yellowColor];
+                UIViewController *controller = [[GYLifeCycleViewController alloc] init];
+                controller.title = @"2";
                 controller;
             }),
             ({
-                UIViewController *controller = [[UIViewController alloc] init];
-                controller.view.backgroundColor = [UIColor brownColor];
+                UIViewController *controller = [[GYLifeCycleViewController alloc] init];
+                controller.title = @"3";
                 controller;
             })
             ];

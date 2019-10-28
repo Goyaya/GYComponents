@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		001BB680236704E50056CDC7 /* GYLifeCycleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 001BB67F236704E50056CDC7 /* GYLifeCycleViewController.m */; };
 		40991EB02C09CD401C9E1B8B /* Pods_GYComponents_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD3B625528FD6F462D4DEAD /* Pods_GYComponents_Example.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		001BB67E236704E50056CDC7 /* GYLifeCycleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GYLifeCycleViewController.h; sourceTree = "<group>"; };
+		001BB67F236704E50056CDC7 /* GYLifeCycleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GYLifeCycleViewController.m; sourceTree = "<group>"; };
 		4C9E7B28954A94E6F965C011 /* Pods-GYComponents_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GYComponents_Tests.debug.xcconfig"; path = "Target Support Files/Pods-GYComponents_Tests/Pods-GYComponents_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		517F773B74D8A473B6B0D424 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		53F9B544C437F4C299D88F68 /* GYComponents.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = GYComponents.podspec; path = ../GYComponents.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -139,6 +142,8 @@
 				6003F59D195388D20070C39A /* GYAppDelegate.m */,
 				E3FF45802327F4E100526C4A /* GYFeaturesTableViewController.h */,
 				E3FF45812327F4E100526C4A /* GYFeaturesTableViewController.m */,
+				001BB67E236704E50056CDC7 /* GYLifeCycleViewController.h */,
+				001BB67F236704E50056CDC7 /* GYLifeCycleViewController.m */,
 				E354F1B623293794000BE24C /* GYCollectionViewDivisionLayoutViewController.h */,
 				E354F1B723293794000BE24C /* GYCollectionViewDivisionLayoutViewController.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -372,6 +377,7 @@
 				6003F59E195388D20070C39A /* GYAppDelegate.m in Sources */,
 				E3FF45822327F4E100526C4A /* GYFeaturesTableViewController.m in Sources */,
 				E354F1B823293794000BE24C /* GYCollectionViewDivisionLayoutViewController.m in Sources */,
+				001BB680236704E50056CDC7 /* GYLifeCycleViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
