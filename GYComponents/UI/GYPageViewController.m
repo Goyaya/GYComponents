@@ -521,6 +521,10 @@ UIScrollViewDelegate
     self.innerScrollView.scrollEnabled = self.appearanceStorage.scrollEnabled;
 }
 
+- (id<GYPageViewControllerAppearance>)appearance {
+    return self;
+}
+
 - (void)setShowsVerticalScrollIndicator:(BOOL)ifNeeds {
     self.appearanceStorage.showsVerticalScrollIndicator = ifNeeds;
     if (self.viewLoaded) {
