@@ -12,10 +12,6 @@
 
 @import GYComponents;
 
-#import <GYComponents/GYRunLoopObserver.h>
-
-#import <GYComponents/GYAVPlayController.h>
-
 @interface GYFeaturesTableViewController () <
 GYPageViewControllerDataSource
 , GYAVPlayControllerDelegate
@@ -80,6 +76,7 @@ GYPageViewControllerDataSource
     }
     _playController = [[GYAVPlayController alloc] init];
     _playController.delegate = self;
+    _playController.progressReportInterval = CMTimeMakeWithSeconds(0.1, 100);
     _playController.url = [NSURL URLWithString:@"https://music.topgamers.cn/1562241711369.mp3"];
     [_playController prepare];
 }
@@ -144,13 +141,13 @@ GYPageViewControllerDataSource
 
 /// progress updated
 - (void)AVPlayController:(GYAVPlayController *)playController item:(AVPlayerItem *)item progressUpdatedTo:(double)progress inTotal:(double)total {
-    NSLog(@"%s\n\t progress: %.2f, total:%.2f", __func__, progress, total);
+    NSLog(@"%s\n\t progress: %f, total:%f", __func__, progress, total);
 }
 
 /// play finished
 - (void)AVPlayController:(GYAVPlayController *)playController finishedPlayingItem:(AVPlayerItem *)item {
     NSLog(@"%s", __func__);
-    [playController seekToTime:0];
+    [playController seekToTime:kCMTimeZero];
     [playController play];
 }
 

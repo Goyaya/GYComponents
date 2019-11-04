@@ -102,9 +102,9 @@ typedef NS_ENUM(int, GYAVPlayControllerPrepareStatus) {
     self.prepareStatus = GYAVPlayControllerPrepareStatusNone;
 }
 
-- (void)seekToTime:(double)time {
+- (void)seekToTime:(CMTime)time {
     if (self.prepareStatus == GYAVPlayControllerPrepareStatusPrepared) {
-        [self.player seekToTime:CMTimeMake(time, 1)];
+        [self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
     }
 }
 
@@ -113,7 +113,7 @@ typedef NS_ENUM(int, GYAVPlayControllerPrepareStatus) {
 /// 默认设置
 - (void)attachConfigurations {
     [self addSystemNotifications];
-    self.progressReportInterval = 1.0;
+    self.progressReportInterval = CMTimeMakeWithSeconds(1, 10);
 }
 
 /// 清除工作
@@ -141,7 +141,7 @@ typedef NS_ENUM(int, GYAVPlayControllerPrepareStatus) {
     
     [_item addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     typeof(self) __weak weakself = self;
-    _periodicTimeObserver = [_player addPeriodicTimeObserverForInterval:CMTimeMake(self.progressReportInterval, 10) queue:NULL usingBlock:^(CMTime time) {
+    _periodicTimeObserver = [_player addPeriodicTimeObserverForInterval:self.progressReportInterval queue:NULL usingBlock:^(CMTime time) {
         // 进度更新
         double total = CMTimeGetSeconds(weakself.item.duration);
         double progress = CMTimeGetSeconds(time);
