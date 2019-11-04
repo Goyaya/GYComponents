@@ -70,6 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// moves the playback cursor if conditions fit
 - (void)seekToTime:(CMTime)time;
+- (void)seekToTime:(CMTime)time complete:(void (^ _Nullable)(BOOL finished))complete;
 
 @end
 

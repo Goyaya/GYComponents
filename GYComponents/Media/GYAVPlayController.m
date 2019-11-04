@@ -108,6 +108,16 @@ typedef NS_ENUM(int, GYAVPlayControllerPrepareStatus) {
     }
 }
 
+- (void)seekToTime:(CMTime)time complete:(void (^)(BOOL finished))complete {
+    if (self.prepareStatus == GYAVPlayControllerPrepareStatusPrepared) {
+        [self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+            if (complete) {
+                complete(finished);
+            }
+        }];
+    }
+}
+
 #pragma mark -
 
 /// 默认设置
