@@ -75,6 +75,8 @@ UIScrollViewDelegate
 
 /// 第一个加载的controller
 @property (nonatomic, readwrite, strong) UIViewController *firstLoadViewController;
+/// 子控制缓存
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, UIViewController *> *childViewControllerCache;
 
 @end
 
@@ -153,6 +155,8 @@ UIScrollViewDelegate
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [self updateScrollViewContentSize];
+    [self updateChildViewControllerPosition];
+    [self updateScrollViewContentOffsetAnimated:NO];
 }
 
 - (BOOL)shouldAutomaticallyForwardAppearanceMethods {
@@ -228,11 +232,7 @@ UIScrollViewDelegate
     
     _index = index;
     // offset
-    [self handleScrollDirectionWhenHorizontal:^{
-        [self.innerScrollView setContentOffset:CGPointMake(self.innerScrollView.bounds.size.width * index, 0) animated:animation];
-    } whenVertical:^{
-        [self.innerScrollView setContentOffset:CGPointMake(0, self.innerScrollView.bounds.size.height * index) animated:animation];
-    }];
+    [self updateScrollViewContentOffsetAnimated:animation];
     
     __weak typeof(self) weakself = self;
     self.setIndexComplete = ^{
@@ -286,6 +286,25 @@ UIScrollViewDelegate
     }];
 }
 
+- (void)updateChildViewControllerPosition {
+    CGSize containerSize = self.innerScrollView.bounds.size;
+    [self.childViewControllerCache enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, UIViewController * _Nonnull controller, BOOL * _Nonnull stop) {
+        [self handleScrollDirectionWhenHorizontal:^{
+            controller.view.center = CGPointMake(containerSize.width * key.integerValue + containerSize.width / 2, containerSize.height / 2);
+        } whenVertical:^{
+            controller.view.center = CGPointMake(containerSize.width / 2, containerSize.height * key.integerValue + containerSize.height / 2);
+        }];
+    }];
+}
+
+- (void)updateScrollViewContentOffsetAnimated:(BOOL)aniamted {
+    [self handleScrollDirectionWhenHorizontal:^{
+        [self.innerScrollView setContentOffset:CGPointMake(self.innerScrollView.bounds.size.width * self.index, 0) animated:aniamted];
+    } whenVertical:^{
+        [self.innerScrollView setContentOffset:CGPointMake(0, self.innerScrollView.bounds.size.height * self.index) animated:aniamted];
+    }];
+}
+
 - (UIViewController *)loadViewControllerAtIndex:(NSInteger)index {
     UIViewController *controller = [self controllerAtIndexNoCheck:index];
     // 已经加入直接返回
@@ -318,6 +337,7 @@ UIScrollViewDelegate
     NSInteger index = [self indexOfFirstDisplayInPageViewController];
     self.index = index;
     self.firstLoadViewController = [self loadViewControllerAtIndex: index];
+    [self updateChildViewControllerPosition];
 }
 
 - (void)beginTransition {
@@ -360,6 +380,11 @@ UIScrollViewDelegate
 
 - (UIViewController *)controllerAtIndexNoCheck:(NSInteger)index {
     UIViewController *controller = nil;
+    NSNumber *key = @(index);
+    if (self.childViewControllerCache[key]) {
+        controller = self.childViewControllerCache[key];
+        return controller;
+    }
     if (_dataSource) {
         controller = [_dataSource pageViewController:self controllerAtIndex:index];
     }
@@ -367,6 +392,7 @@ UIScrollViewDelegate
         controller = [_innerDataSource pageViewController:self controllerAtIndex:index];
     }
     NSAssert(controller, @"must have a view controller");
+    self.childViewControllerCache[key] = controller;
     return controller;
 }
 
@@ -576,6 +602,14 @@ UIScrollViewDelegate
         _appearanceStorage.scrollEnabled = YES;
     }
     return _appearanceStorage;
+}
+
+
+- (NSMutableDictionary<NSNumber *, UIViewController *> *)childViewControllerCache {
+    if (!_childViewControllerCache) {
+        _childViewControllerCache = [[NSMutableDictionary alloc] init];
+    }
+    return _childViewControllerCache;
 }
 
 @end
