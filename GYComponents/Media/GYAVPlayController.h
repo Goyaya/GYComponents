@@ -39,15 +39,15 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GYAVPlayController : NSObject
 
 /// context
-@property (nonatomic, readwrite, strong) id context;
+@property (nonatomic, readwrite, strong, nullable) id context;
 /// delegate
 @property (nonatomic, readwrite, weak) id<GYAVPlayControllerDelegate> delegate;
 /// url
-@property (nonatomic, readwrite, strong) NSURL *url;
+@property (nonatomic, readwrite, strong, nullable) NSURL *url;
 /// asset
-@property (nonatomic, readwrite, strong) AVAsset *asset;
+@property (nonatomic, readwrite, strong, nullable) AVAsset *asset;
 /// item
-@property (nonatomic, readwrite, strong) AVPlayerItem *item;
+@property (nonatomic, readwrite, strong, nullable) AVPlayerItem *item;
 /// playing or not
 @property (nonatomic, readonly, assign, getter=isPlaying) BOOL playing;
 /// progress report interval. default is once per second
